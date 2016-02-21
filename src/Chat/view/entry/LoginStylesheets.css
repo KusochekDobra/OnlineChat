@@ -1,0 +1,8 @@
+#button1{
+ -fx-font-size: 2em;
+ -fx-text-align:  center;
+ -fx-position: relative;
+ -fx-margin: 10px;
+ -fx-border-width: 2;
+ -fx-background-radius: 0;
+}

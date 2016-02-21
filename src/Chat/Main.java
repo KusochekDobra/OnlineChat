@@ -19,7 +19,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Entry");
-
+        //setUserAgentStylesheet(STYLESHEET_MODENA);
         initRootLayout();
 
         //showAnything();
@@ -61,10 +61,12 @@ public class Main extends Application {
     public void initRootLayout(){
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(Main.class.getResource("view/entry/Login.fxml"));
+
         try {
             rootLayout = (BorderPane) loader.load();
 
             Scene scene = new Scene(rootLayout);
+
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (IOException e) {
