@@ -19,7 +19,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Entry");
-        //setUserAgentStylesheet(STYLESHEET_MODENA);
+        setUserAgentStylesheet(STYLESHEET_MODENA);
         initRootLayout();
 
         //showAnything();
