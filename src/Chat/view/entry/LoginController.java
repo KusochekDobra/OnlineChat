@@ -1,6 +1,6 @@
-package Chat.view.entry;
+package chat.view.entry;
 
-import Chat.Main;
+import chat.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
