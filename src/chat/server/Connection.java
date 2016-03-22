@@ -1,7 +1,7 @@
 package chat.server;
 
 import java.io.IOException;
-import java.net.InetAddress;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayDeque;
@@ -10,36 +10,42 @@ import java.util.ArrayDeque;
 public class Connection implements Runnable{
 
     public static ArrayDeque<User> users = new ArrayDeque<>();
-
-    Thread threadForSend;
-
+    public static SendMessage sendMessage;
+    private boolean isEnough = false;
+    private Thread threadForSend;
     private ServerSocket serverSocket;
+
+    public final int PORT = 9999;
 
     @Override
     public void run() {
 
         try {
-            serverSocket = new ServerSocket(9999, 10);
-           SendMessage sendMessage = new SendMessage();
+            serverSocket = new ServerSocket(PORT);
+            sendMessage = new SendMessage();
             threadForSend = new Thread(sendMessage);
+            threadForSend.start();
 
-            while (true){
+            while (!isEnough){
+
                 Socket socket = serverSocket.accept();
-                    addNewUser(socket.getInetAddress());
-
+                if (addNewUser(socket))
                     new Thread(new Receiver(socket)).start();
-                    threadForSend.start();
             }
         } catch (IOException e) {
             System.out.println("Can't upload server(");
         }
     }
 
-    public boolean addNewUser(InetAddress inetAddress){
+
+    public boolean addNewUser(Socket socket){
         for (User item: users){
-            if(item.getIP() == inetAddress) {System.out.println("User have already been"); return false;}
+            if(item.getSocket().getInetAddress() == socket.getInetAddress()) {
+                System.out.println("User have already been");
+                return false;
+            }
         }
-        users.addLast(new User(inetAddress));
+        users.addLast(new User(socket));
         return true;
     }
 
@@ -47,9 +53,19 @@ public class Connection implements Runnable{
         return users;
     }
 
-    public void send(){
-        ;
-    }
+    public void close() {
 
+        isEnough = true;
+        sendMessage.close();
+
+        System.out.println(threadForSend.isAlive());
+
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
 

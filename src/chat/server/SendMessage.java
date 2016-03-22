@@ -1,23 +1,52 @@
 package chat.server;
 
+import java.io.IOException;
+
+import java.io.ObjectOutputStream;
+
 import java.util.ArrayList;
 
 public class SendMessage implements Runnable {
-    public static ArrayList<User> lastSendUser;
+    public ArrayList<User> lastSendUser;
 
+    private boolean stop = false;
 
-    @Override
-    public synchronized void run() {
-
-       for(User item : lastSendUser){
-           for(int j = 0; j < Connection.users.size(); j++){
-               //Передать сообщение
-           }
-       }
+    public SendMessage() {
+        lastSendUser = new ArrayList<>();
     }
 
-    public static void add(User user){
+    @Override
+    public void run() {
+        while (!stop) {
+            if(!lastSendUser.isEmpty()) {
+                for (User sender : lastSendUser) {
+                    for (User receiver : Connection.users) {
+                        try {
+                            new ObjectOutputStream(receiver.getSocket().getOutputStream()).writeUTF(sender.getMessage());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            // add user disconnect
+                            System.out.println("Glupii exception");
+                        }
+                    }
+                }
+
+                lastSendUser.clear();
+                try {
+                    wait(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public synchronized void add(User user){
         lastSendUser.add(user);
+    }
+
+    public void close(){
+        stop = true;
     }
 
 }

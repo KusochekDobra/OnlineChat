@@ -23,17 +23,16 @@ public class Receiver extends Thread{
     @Override
     public void run() {
         try {
-            while (socket.isConnected())
-            { /**!!!!!!!!!!!!!!*/
+            while (true)
+            {
                 String string = input.readUTF();
                 user.setMessage(string);
-                SendMessage.lastSendUser.add(user);
-
-                //Каждый раз создавать новый объект ЮЗЕРА
+                Connection.sendMessage.lastSendUser.add(user);
+                //ДИЧ (нет) (да)
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             try {
                 socket.close();
             } catch (IOException e) {
@@ -44,7 +43,7 @@ public class Receiver extends Thread{
 
     private User findUser(Socket socket){
         for(User item : Connection.getUsers()){
-            if (socket.getInetAddress() == item.getIP()) return item;
+            if (socket.getInetAddress() == item.getSocket().getInetAddress()) return item;
         }
         throw new NoSuchElementException("Что-то пошло не так, юзер должен существовать!") ;
     }

@@ -1,28 +1,35 @@
 package chat.server;
 
 import sun.plugin2.message.Message;
-import sun.security.x509.IPAddressName;
 
 import java.net.InetAddress;
-import java.util.ArrayDeque;
-import java.util.Iterator;
+import java.net.Socket;
 
 public class User{
 
     private String message;
 
-    private InetAddress inetAddress;
+    private Socket socket;
 
-    public User(InetAddress inetAddress) {
-        this.inetAddress = inetAddress;
+    public User(Socket socket) {
+        this.socket = socket;
     }
 
     public void setMessage(String message){
         this.message = message;
     }
 
-    public InetAddress getIP(){
-        return inetAddress;
+    public Socket getSocket(){
+        return socket;
+    }
+
+    public User(Socket socket, String message){
+        this.socket = socket;
+        this.message = message;
+    }
+
+    public User(String message, Socket socket){
+        this(socket, message);
     }
 
     public String getMessage() {

@@ -1,6 +1,6 @@
-package chat.view.entry;
+package chat.client.view.entry;
 
-import chat.Main;
+import chat.client.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -18,8 +18,10 @@ public class LoginController {
     @FXML
     void okButton(){
 
-        (new Main()).EntryIsOk();
         ((Stage)button.getScene().getWindow()).close();
+
+        (new Main()).entryIsOk();
+
 
     }
 }
