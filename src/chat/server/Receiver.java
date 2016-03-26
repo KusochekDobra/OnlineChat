@@ -26,7 +26,7 @@ public class Receiver extends Thread{
         try {
             while (true)
             {
-                String string = input.readUTF();
+                String string = (String) input.readObject();
                 user.setMessage(string);
                 Connection.sendMessage.lastSendUser.add(user);
 
@@ -34,6 +34,8 @@ public class Receiver extends Thread{
                 //ДИЧ (нет) (да)
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
             try {

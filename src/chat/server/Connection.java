@@ -31,8 +31,10 @@ public class Connection implements Runnable{
             while (!isEnough){
                 Socket socket = serverSocket.accept();
 
-                if (addNewUser(socket))
-                    new Thread(new Receiver(socket)).start();
+                if (addNewUser(socket)) {
+                    Receiver receiver = new Receiver(socket);
+                    new Thread(receiver).start();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
