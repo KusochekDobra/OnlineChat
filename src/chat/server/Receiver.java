@@ -13,6 +13,7 @@ public class Receiver extends Thread{
     private ObjectInputStream input;
     public ObjectOutputStream output;
 
+
     public Receiver(Socket socket) throws IOException {
         this.socket = socket;
         input = new ObjectInputStream (socket.getInputStream());
@@ -28,6 +29,8 @@ public class Receiver extends Thread{
                 String string = input.readUTF();
                 user.setMessage(string);
                 Connection.sendMessage.lastSendUser.add(user);
+
+                StaticField.controller.test();
                 //ДИЧ (нет) (да)
             }
         } catch (IOException e) {
@@ -36,6 +39,7 @@ public class Receiver extends Thread{
             try {
                 socket.close();
             } catch (IOException e) {
+                e.printStackTrace();
                 System.out.println("Can't close socket((");
             }
         }

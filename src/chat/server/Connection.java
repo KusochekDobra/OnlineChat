@@ -15,6 +15,8 @@ public class Connection implements Runnable{
     private Thread threadForSend;
     private ServerSocket serverSocket;
 
+    public ViewController viewController;
+
     public final int PORT = 9999;
 
     @Override
@@ -27,12 +29,14 @@ public class Connection implements Runnable{
             threadForSend.start();
 
             while (!isEnough){
-
                 Socket socket = serverSocket.accept();
+
                 if (addNewUser(socket))
                     new Thread(new Receiver(socket)).start();
             }
         } catch (IOException e) {
+            e.printStackTrace();
+
             System.out.println("Can't upload server(");
         }
     }
@@ -58,13 +62,15 @@ public class Connection implements Runnable{
         isEnough = true;
         sendMessage.close();
 
-        System.out.println(threadForSend.isAlive());
+
 
         try {
             serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        System.out.println(threadForSend.isAlive());
 
     }
 }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class SendMessage implements Runnable {
     public ArrayList<User> lastSendUser;
 
-    private boolean stop = false;
+    volatile private boolean stop = false;
 
     public SendMessage() {
         lastSendUser = new ArrayList<>();
@@ -47,6 +47,7 @@ public class SendMessage implements Runnable {
 
     public void close(){
         stop = true;
+
     }
 
 }

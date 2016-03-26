@@ -31,6 +31,8 @@ public class Main extends Application {
         try {
             AnchorPane rootLayout = loader.load();
 
+            StaticField.controller = loader.getController();
+
             Scene scene = new Scene(rootLayout);
 
             primaryStage.setScene(scene);
@@ -49,10 +51,12 @@ public class Main extends Application {
                        mainThread.join();
                     } catch (Exception e) {
                         e.printStackTrace();
-                      ;
+
                     }
                 }
             });
+
+
 
             primaryStage.show();
 
