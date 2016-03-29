@@ -21,24 +21,19 @@ public class SendMessage implements Runnable {
             if(!lastSendUser.isEmpty()) {
                 for (User sender : lastSendUser) {
                     for (User receiver : Connection.users) {
+                        //new ObjectOutputStream(receiver.getSocket().getOutputStream()).writeUTF(sender.getMessage());
                         try {
-                            new ObjectOutputStream(receiver.getSocket().getOutputStream()).writeUTF(sender.getMessage());
+                            receiver.getSocket().getOutputStream().write(sender.getMessage().getBytes());
                         } catch (IOException e) {
                             e.printStackTrace();
-                            // add user disconnect
-                            System.out.println("Glupii exception");
                         }
                     }
                 }
 
                 lastSendUser.clear();
-                try {
-                    wait(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         }
+
     }
 
     public synchronized void add(User user){

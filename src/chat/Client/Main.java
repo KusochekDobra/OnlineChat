@@ -2,7 +2,9 @@ package chat.client;
 
 
 import chat.client.view.Connection;
+import chat.client.view.chat.ChatController;
 import chat.client.view.chat.Preview;
+import chat.client.view.entry.LoginController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +21,7 @@ public class Main extends Application{
     private Stage primaryStage;
     private BorderPane rootLayout;
     private Connection connection;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -60,9 +63,15 @@ public class Main extends Application{
             dialogStage.setScene(scene);
 
             connection = new Connection("127.0.0.1", 9999);
+            connection.setUserName(LoginController.name);
 
             Thread connectionThread = new Thread(connection);
             connectionThread.start();
+
+            ChatController chatController = loader.getController();
+
+            chatController.setConnection(connection);
+            Connection.setChatController(chatController);
 
             dialogStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
@@ -100,10 +109,25 @@ public class Main extends Application{
             Scene scene = new Scene(rootLayout);
 
             primaryStage.setScene(scene);
-            primaryStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+        primaryStage.show();
+
+
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    stop();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                LoginController.closeTimer();
+            }
+        });
     }
 
     public Stage getPrimaryStage() {

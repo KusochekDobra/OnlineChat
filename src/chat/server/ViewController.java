@@ -10,9 +10,8 @@ public class ViewController {
     @FXML
     private TextArea textArea;
 
-    public void test(){
+    public void test(String s){
 
-        textArea.setText("RABOTAiet");
-        textArea.appendText("HUUUUUUUUUUUUUUU");
+       textArea.appendText(s + "\n");
     }
 }
