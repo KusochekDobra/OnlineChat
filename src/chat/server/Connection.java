@@ -24,6 +24,7 @@ public class Connection implements Runnable{
 
         try {
             serverSocket = new ServerSocket(PORT);
+
             sendMessage = new SendMessage();
             threadForSend = new Thread(sendMessage);
             threadForSend.start();
